@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Spin: Scientific Data Repository</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Dashboard -->
+    <nav class="dashboard">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="8" fill="#1a1f3a"/>
+                        <circle cx="50" cy="50" r="20" fill="none" stroke="url(#gradient1)" stroke-width="1.5"/>
+                        <path d="M 30 30 Q 50 50, 70 70" fill="none" stroke="url(#gradient2)" stroke-width="2"/>
+                        <defs>
+                            <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#c1121f;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#c1121f;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="logo-text">Spin</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Search</a>
+                <a href="browse.html" class="nav-link">Browse</a>
+                <a href="create-post.html" class="nav-link">Create Post</a>
+                <a href="signup.html" class="nav-link active">Sign Up</a>
+                <a href="login.html" class="nav-link" id="nav-login-link">Login</a>
+                <a href="#" class="nav-link" id="nav-profile-link" style="display: none;">Profile</a>
+                <a href="#" class="nav-link" id="nav-logout-link" style="display: none;">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="signup-container">
+            <div class="signup-header">
+                <h1 class="page-title">Create Your Account</h1>
+                <p class="signup-subtitle">Join Spin to share and discover scientific research data</p>
+                <a href="index.html" class="back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Search
+                </a>
+            </div>
+
+            <form class="signup-form" id="signup-form">
+                <div class="form-section">
+                    <h2 class="form-section-title">Personal Information</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first-name">First Name <span class="required">*</span></label>
+                            <input type="text" id="first-name" name="first-name" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name <span class="required">*</span></label>
+                            <input type="text" id="last-name" name="last-name" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country">Country of Residence <span class="required">*</span></label>
+                        <select id="country" name="country" class="form-input" required>
+                            <option value="">Select Country</option>
+                            <option value="US">United States</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="CA">Canada</option>
+                            <option value="AU">Australia</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="JP">Japan</option>
+                            <option value="CN">China</option>
+                            <option value="IN">India</option>
+                            <option value="BR">Brazil</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-section-title">Institutional Affiliation</h2>
+                    
+                    <div class="form-group">
+                        <label for="institution-type">Type of Institution <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="institution-type" value="academia" required>
+                                <span class="radio-custom"></span>
+                                Academia
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="institution-type" value="industry" required>
+                                <span class="radio-custom"></span>
+                                Industry
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="institution-type" value="government" required>
+                                <span class="radio-custom"></span>
+                                Government
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="institution-name">Name of Institution <span class="required">*</span></label>
+                        <input type="text" id="institution-name" name="institution-name" class="form-input" placeholder="e.g., Stanford University" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Role <span class="required">*</span></label>
+                        <select id="role" name="role" class="form-input" required>
+                            <option value="">Select Role</option>
+                            <option value="principal-investigator">Principal Investigator</option>
+                            <option value="research-scientist">Research Scientist</option>
+                            <option value="lab-manager">Lab Manager</option>
+                            <option value="postdoc">Postdoc</option>
+                            <option value="graduate-student">Graduate Student</option>
+                            <option value="postgrad">Postgraduate</option>
+                            <option value="undergraduate">Undergraduate</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-section-title">Account Security</h2>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="your.email@institution.edu" required>
+                        <small class="form-hint">We'll use this for account verification and notifications</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password <span class="required">*</span></label>
+                        <input type="password" id="password" name="password" class="form-input" required>
+                        <small class="form-hint">Minimum 8 characters, include uppercase, lowercase, and numbers</small>
+                        <div class="password-strength" id="password-strength"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password <span class="required">*</span></label>
+                        <input type="password" id="confirm-password" name="confirm-password" class="form-input" required>
+                        <div class="password-match" id="password-match"></div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkbox-custom"></span>
+                            I agree to the <a href="#" class="link">Terms of Service</a> and <a href="#" class="link">Privacy Policy</a> <span class="required">*</span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            <span class="checkbox-custom"></span>
+                            I would like to receive updates about new datasets and features
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary btn-large">Create Account</button>
+                    <p class="form-footer-text">
+                        Already have an account? <a href="login.html" class="link">Log in</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+

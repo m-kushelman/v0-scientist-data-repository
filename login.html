@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Spin: Scientific Data Repository</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Dashboard -->
+    <nav class="dashboard">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="8" fill="#1a1f3a"/>
+                        <circle cx="50" cy="50" r="20" fill="none" stroke="url(#gradient1)" stroke-width="1.5"/>
+                        <path d="M 30 30 Q 50 50, 70 70" fill="none" stroke="url(#gradient2)" stroke-width="2"/>
+                        <defs>
+                            <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#c1121f;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#c1121f;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="logo-text">Spin</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Search</a>
+                <a href="browse.html" class="nav-link">Browse</a>
+                <a href="signup.html" class="nav-link">Sign Up</a>
+                <a href="login.html" class="nav-link active">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="signup-container">
+            <div class="signup-header">
+                <h1 class="page-title">Login to Your Account</h1>
+                <p class="signup-subtitle">Access your scientific data repository</p>
+                <a href="index.html" class="back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Search
+                </a>
+            </div>
+
+            <form class="signup-form" id="login-form">
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="login-email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="login-email" name="email" class="form-input" placeholder="your.email@institution.edu" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">Password <span class="required">*</span></label>
+                        <input type="password" id="login-password" name="password" class="form-input" required>
+                    </div>
+                </div>
+
+                <div id="login-error" class="error-message" style="display: none;"></div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary btn-large">Login</button>
+                    <p class="form-footer-text">
+                        Don't have an account? <a href="signup.html" class="link">Sign up</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
