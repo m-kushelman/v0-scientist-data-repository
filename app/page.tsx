@@ -1,8 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { Filter, Users, Database } from "lucide-react"
+import { Filter, Users, Database, Search, TrendingUp, AlertCircle } from "lucide-react"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,8 +11,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { SiteHeader } from "@/components/site-header"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 export default function HomePage() {
+  const router = useRouter()
   const [currentUser, setCurrentUser] = useState<{
     firstName: string
     lastName: string
@@ -28,6 +31,55 @@ export default function HomePage() {
     }
   }, [])
 
+  const featuredDatasets = [
+    {
+      id: 1,
+      title: "Failed CRISPR Knockout of daf-2 in C. elegans Shows No Lifespan Extension",
+      author: "Dr. Sarah Johnson, Stanford University",
+      description:
+        "Despite successful CRISPR-mediated knockout of daf-2 confirmed by sequencing, we observed no significant increase in lifespan across three independent replication attempts.",
+      organisms: ["Caenorhabditis elegans"],
+      methods: ["CRISPR/Cas9", "Genotyping PCR", "Sanger Sequencing", "Lifespan Assay"],
+      saves: 12,
+      date: "March 2024",
+      impact: [
+        { type: "Used in publication", count: 3 },
+        { type: "Prevented redundant experiment", count: 8 },
+      ],
+    },
+    {
+      id: 2,
+      title: "Resveratrol Supplementation Shows No Cognitive Benefits in Healthy Adults",
+      author: "Dr. Amanda Lee, Johns Hopkins University",
+      description:
+        "A double-blind, placebo-controlled trial of resveratrol supplementation in 120 healthy adults showed no improvements in cognitive function or brain activity patterns after 6 months.",
+      organisms: ["Homo sapiens"],
+      methods: ["fMRI", "Cognitive Testing Battery", "ELISA", "LC-MS/MS"],
+      saves: 15,
+      date: "February 2024",
+      impact: [
+        { type: "Used in grant application", count: 5 },
+        { type: "Prevented redundant experiment", count: 12 },
+      ],
+    },
+    {
+      id: 3,
+      title: "Metformin Does Not Enhance Exercise Performance in Non-Diabetic Athletes",
+      author: "Dr. James Wilson, University of Texas",
+      description:
+        "Despite confirmed biochemical changes, no improvements in VO2 max or time trial performance were observed across four separate cohorts.",
+      organisms: ["Homo sapiens"],
+      methods: ["VO2 Max Testing", "Lactate Threshold Analysis", "Metabolomics", "Western Blot"],
+      saves: 18,
+      date: "January 2024",
+      impact: [
+        { type: "Used in publication", count: 2 },
+        { type: "Used in grant application", count: 4 },
+        { type: "Prevented redundant experiment", count: 15 },
+      ],
+    },
+  ]
+
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
@@ -37,19 +89,22 @@ export default function HomePage() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Spin: Scientific Data Repository
+                  Spin: Unpublished Scientific Data
                 </h1>
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-spin-orange/10 border border-spin-orange/30 rounded-full text-sm text-spin-orange">
+                  <AlertCircle className="h-3 w-3" />
+                  <span className="font-medium">Pre-Alpha Version</span>
+                </div>
                 {currentUser && (
                   <p className="text-lg text-spin-navy font-medium">Welcome back, {currentUser.firstName}!</p>
                 )}
-                <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                  Share, discover, and collaborate on scientific research data with researchers worldwide.
-                </p>
+                <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">The missing half of science</p>
               </div>
               <div className="w-full max-w-2xl space-y-2">
                 <div className="flex w-full items-center space-x-2">
-                  <Input type="search" placeholder="Search for datasets, methods, or topics..." className="h-12" />
+                  <Input type="search" placeholder="Search for null results, methods, organisms..." className="h-12" />
                   <Button type="submit" size="icon" className="h-12 w-12 bg-spin-navy hover:bg-spin-navy/90">
+                    <Search className="h-5 w-5" />
                     <span className="sr-only">Search</span>
                   </Button>
                 </div>
@@ -83,6 +138,14 @@ export default function HomePage() {
                         </Select>
                       </div>
                       <div className="space-y-2">
+                        <Label htmlFor="organisms">Organisms (Latin names)</Label>
+                        <Input id="organisms" placeholder="e.g., Escherichia coli, Drosophila melanogaster" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="methods">Methods (Be specific)</Label>
+                        <Input id="methods" placeholder="e.g., fMRI, CRISPR/Cas9, RT-qPCR" />
+                      </div>
+                      <div className="space-y-2">
                         <Label htmlFor="subtopic">Subtopic</Label>
                         <Input id="subtopic" placeholder="e.g., Quantum Physics, Genomics" />
                       </div>
@@ -110,14 +173,6 @@ export default function HomePage() {
                         <Input id="institution" placeholder="e.g., MIT, Stanford University" />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="organisms">Organisms</Label>
-                        <Input id="organisms" placeholder="e.g., E. coli, Drosophila" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="methods">Methods</Label>
-                        <Input id="methods" placeholder="e.g., PCR, CRISPR, Machine Learning" />
-                      </div>
-                      <div className="space-y-2">
                         <Label htmlFor="keywords">Keywords</Label>
                         <Input id="keywords" placeholder="Enter keywords separated by commas" />
                       </div>
@@ -137,47 +192,47 @@ export default function HomePage() {
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">How It Works</h2>
                 <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                  A platform designed for scientists to share and discover research data.
+                  A platform designed to capture the crucial negative data that often goes unpublished.
                 </p>
               </div>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-                <Card className="flex flex-col items-center text-center">
-                  <CardHeader>
-                    <Database className="h-12 w-12 text-spin-orange" />
-                    <CardTitle>Share Your Data</CardTitle>
+                <Card className="text-center">
+                  <CardHeader className="flex flex-col items-center">
+                    <Database className="h-12 w-12 text-spin-orange mx-auto mb-4" />
+                    <CardTitle>Share Negative Results</CardTitle>
                     <CardDescription>
-                      Upload your research data, methods, and descriptions in a structured format.
+                      Document null experiments, failed replications, and optimization attempts that didn't work.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground">
-                      Create verified entries with your research findings, methodologies, and key insights.
+                      Help the scientific community learn from what didn't work, preventing wasted effort and resources.
                     </p>
                   </CardContent>
                 </Card>
-                <Card className="flex flex-col items-center text-center">
-                  <CardHeader>
-                    <Filter className="h-12 w-12 text-spin-coral" />
-                    <CardTitle>Discover Research</CardTitle>
+                <Card className="text-center">
+                  <CardHeader className="flex flex-col items-center">
+                    <Filter className="h-12 w-12 text-spin-coral mx-auto mb-4" />
+                    <CardTitle>Search by Methods</CardTitle>
                     <CardDescription>
-                      Find relevant data through our powerful search and filtering system.
+                      Find data by experimental methods, organisms, and types of negative outcomes.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground">
-                      Use tags, keywords, and advanced search to find exactly what you're looking for.
+                      Use powerful filters to discover if others have tried similar approaches and what they learned.
                     </p>
                   </CardContent>
                 </Card>
-                <Card className="flex flex-col items-center text-center">
-                  <CardHeader>
-                    <Users className="h-12 w-12 text-spin-orange" />
-                    <CardTitle>Collaborate</CardTitle>
-                    <CardDescription>Connect with other researchers and build on existing work.</CardDescription>
+                <Card className="text-center">
+                  <CardHeader className="flex flex-col items-center">
+                    <Users className="h-12 w-12 text-spin-orange mx-auto mb-4" />
+                    <CardTitle>Learn & Collaborate</CardTitle>
+                    <CardDescription>Connect with researchers who faced similar challenges.</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground">
-                      Comment on entries, follow researchers, and receive updates on new relevant data.
+                      Build on collective knowledge, avoiding dead ends and accelerating scientific progress.
                     </p>
                   </CardContent>
                 </Card>
@@ -189,45 +244,107 @@ export default function HomePage() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Featured Datasets</h2>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">High-Impact Datasets</h2>
                 <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                  Explore some of the most impactful research data shared on our platform.
+                  Explore impactful negative data that's helping researchers avoid costly mistakes.
                 </p>
               </div>
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {[1, 2, 3].map((i) => (
-                  <Card key={i} className="overflow-hidden">
-                    <CardHeader>
-                      <CardTitle>Climate Change Impact Dataset {i}</CardTitle>
-                      <CardDescription>By Dr. Jane Smith, Environmental Science Institute</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm">
-                        A comprehensive dataset on climate change impacts across different ecosystems, including
-                        temperature variations, biodiversity changes, and ecological responses.
-                      </p>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-                          climate
-                        </span>
-                        <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">
-                          ecology
-                        </span>
-                        <span className="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-700/10">
-                          biodiversity
-                        </span>
-                      </div>
-                    </CardContent>
-                    <CardFooter className="border-t bg-muted/50 px-6 py-3">
-                      <div className="flex items-center justify-between w-full text-xs text-muted-foreground">
-                        <span>Published: March 15, 2024</span>
-                        <span>Citations: 42</span>
-                      </div>
-                    </CardFooter>
-                  </Card>
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full max-w-7xl">
+                {featuredDatasets.map((dataset) => (
+                  <Link key={dataset.id} href={`/dataset/${dataset.id}`} className="group h-full">
+                    <Card className="overflow-hidden h-full transition-shadow hover:shadow-lg cursor-pointer flex flex-col">
+                      <CardHeader>
+                        <CardTitle className="text-lg group-hover:text-spin-navy transition-colors">
+                          {dataset.title}
+                        </CardTitle>
+                        <CardDescription>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <span className="cursor-help">{dataset.author}</span>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <span className="text-xs">Demo profile - not a real person</span>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="flex-1 flex flex-col">
+                        <p className="text-sm">{dataset.description}</p>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {/* Organism tags */}
+                          {dataset.organisms.map((organism, j) => (
+                            <button
+                              key={j}
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                router.push(`/browse?organism=${encodeURIComponent(organism)}`)
+                              }}
+                              className="inline-flex items-center rounded-md bg-spin-coral/20 px-2 py-1 text-xs font-medium text-spin-coral hover:bg-spin-coral/30 transition-colors"
+                            >
+                              {organism}
+                            </button>
+                          ))}
+                          {/* Method tags - show first 3 */}
+                          {dataset.methods.slice(0, 3).map((method, j) => (
+                            <button
+                              key={j}
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                router.push(`/browse?method=${encodeURIComponent(method)}`)
+                              }}
+                              className="inline-flex items-center rounded-md bg-spin-orange/20 px-2 py-1 text-xs font-medium text-spin-orange hover:bg-spin-orange/30 transition-colors"
+                            >
+                              {method}
+                            </button>
+                          ))}
+                          {dataset.methods.length > 3 && (
+                            <span className="inline-flex items-center rounded-md bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
+                              +{dataset.methods.length - 3} more
+                            </span>
+                          )}
+                        </div>
+                        {dataset.impact && dataset.impact.length > 0 && (
+                          <div className="mt-auto pt-4 border-t">
+                            <div className="flex items-center gap-1 mb-2 text-xs text-muted-foreground">
+                              <TrendingUp className="h-3 w-3" />
+                              <span className="font-medium">Impact</span>
+                            </div>
+                            <div className="space-y-1">
+                              {dataset.impact.map((item, idx) => (
+                                <button
+                                  key={idx}
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    console.log(`Clicked impact: ${item.type}`)
+                                  }}
+                                  className="flex items-center justify-between w-full text-xs hover:bg-muted/50 rounded px-2 py-1 transition-colors"
+                                >
+                                  <span className="text-muted-foreground">{item.type}</span>
+                                  <span className="font-medium text-spin-navy">{item.count}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </CardContent>
+                      <CardFooter className="border-t bg-muted/50 px-6 py-3 mt-auto">
+                        <div className="flex items-center justify-between w-full text-xs text-muted-foreground">
+                          <span>Published: {dataset.date}</span>
+                          <span>Saves: {dataset.saves}</span>
+                        </div>
+                      </CardFooter>
+                    </Card>
+                  </Link>
                 ))}
               </div>
-              <Button className="mt-4">Browse All Datasets</Button>
+              <Link href="/browse">
+                <Button className="mt-4 bg-spin-navy hover:bg-spin-navy/90">Browse All Datasets</Button>
+              </Link>
             </div>
           </div>
         </section>
