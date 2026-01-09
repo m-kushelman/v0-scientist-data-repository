@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { Search, ChevronDown, X, TrendingUp, ArrowUpDown } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Badge } from "@/components/ui/badge"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,23 +17,90 @@ import { SiteHeader } from "@/components/site-header"
 export default function BrowsePage() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const [activeFilters, setActiveFilters] = useState<{ organism?: string; method?: string }>(() => {
-    const organism = searchParams.get("organism")
-    const method = searchParams.get("method")
+
+  const [activeFilters, setActiveFilters] = useState<{
+    organisms: string[]
+    methods: string[]
+    date?: string
+    searchQuery?: string
+    author?: string
+    institution?: string
+  }>(() => {
+    const organismsParam = searchParams.get("organism")
+    const methodsParam = searchParams.get("method")
     return {
-      organism: organism || undefined,
-      method: method || undefined,
+      organisms: organismsParam ? [organismsParam] : [],
+      methods: methodsParam ? [methodsParam] : [],
+      date: searchParams.get("date") || undefined,
+      searchQuery: searchParams.get("q") || undefined,
+      author: searchParams.get("author") || undefined,
+      institution: searchParams.get("institution") || undefined,
     }
   })
+
+  const [organismInput, setOrganismInput] = useState("")
+  const [methodInput, setMethodInput] = useState("")
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [sortBy, setSortBy] = useState<"date" | "impact" | "saves">("date")
 
-  const clearFilter = (filterType: "organism" | "method") => {
+  const clearFilter = (
+    filterType: "organisms" | "methods" | "date" | "searchQuery" | "author" | "institution",
+    value?: string,
+  ) => {
     setActiveFilters((prev) => {
       const updated = { ...prev }
-      delete updated[filterType]
+      if (filterType === "organisms" || filterType === "methods") {
+        if (value) {
+          updated[filterType] = updated[filterType].filter((item) => item !== value)
+        } else {
+          updated[filterType] = []
+        }
+      } else {
+        delete updated[filterType as keyof typeof updated]
+      }
       return updated
     })
+
+    updateURL({
+      ...activeFilters,
+      [filterType]:
+        filterType === "organisms" || filterType === "methods"
+          ? value
+            ? activeFilters[filterType].filter((item) => item !== value)
+            : []
+          : undefined,
+    })
+  }
+
+  const addOrganism = () => {
+    if (organismInput.trim() && !activeFilters.organisms.includes(organismInput.trim())) {
+      const updated = [...activeFilters.organisms, organismInput.trim()]
+      setActiveFilters((prev) => ({ ...prev, organisms: updated }))
+      setOrganismInput("")
+    }
+  }
+
+  const addMethod = () => {
+    if (methodInput.trim() && !activeFilters.methods.includes(methodInput.trim())) {
+      const updated = [...activeFilters.methods, methodInput.trim()]
+      setActiveFilters((prev) => ({ ...prev, methods: updated }))
+      setMethodInput("")
+    }
+  }
+
+  const updateURL = (filters: typeof activeFilters) => {
+    const params = new URLSearchParams()
+    if (filters.searchQuery) params.append("q", filters.searchQuery)
+    if (filters.author) params.append("author", filters.author)
+    if (filters.institution) params.append("institution", filters.institution)
+    if (filters.date) params.append("date", filters.date)
+    filters.organisms.forEach((org) => params.append("organism", org))
+    filters.methods.forEach((method) => params.append("method", method))
+    router.push(`/browse?${params.toString()}`)
+  }
+
+  const applyFilters = () => {
+    updateURL(activeFilters)
   }
 
   const allDatasets = [
@@ -134,18 +202,63 @@ export default function BrowsePage() {
   ]
 
   const filteredDatasets = allDatasets.filter((dataset) => {
-    if (
-      activeFilters.organism &&
-      !dataset.organisms.some((org) => org.toLowerCase().includes(activeFilters.organism!.toLowerCase()))
-    ) {
+    if (activeFilters.searchQuery) {
+      const query = activeFilters.searchQuery.toLowerCase()
+      const matchesTitle = dataset.title.toLowerCase().includes(query)
+      const matchesDescription = dataset.description.toLowerCase().includes(query)
+      const matchesMethods = dataset.methods.some((m) => m.toLowerCase().includes(query))
+      const matchesOrganisms = dataset.organisms.some((o) => o.toLowerCase().includes(query))
+
+      if (!matchesTitle && !matchesDescription && !matchesMethods && !matchesOrganisms) {
+        return false
+      }
+    }
+
+    if (activeFilters.organisms.length > 0) {
+      const hasMatchingOrganism = activeFilters.organisms.some((filterOrg) =>
+        dataset.organisms.some((org) => org.toLowerCase().includes(filterOrg.toLowerCase())),
+      )
+      if (!hasMatchingOrganism) return false
+    }
+
+    if (activeFilters.methods.length > 0) {
+      const hasMatchingMethod = activeFilters.methods.some((filterMethod) =>
+        dataset.methods.some((method) => method.toLowerCase().includes(filterMethod.toLowerCase())),
+      )
+      if (!hasMatchingMethod) return false
+    }
+
+    if (activeFilters.author && !dataset.author.toLowerCase().includes(activeFilters.author.toLowerCase())) {
       return false
     }
-    if (
-      activeFilters.method &&
-      !dataset.methods.some((method) => method.toLowerCase().includes(activeFilters.method!.toLowerCase()))
-    ) {
+
+    if (activeFilters.institution && !dataset.author.toLowerCase().includes(activeFilters.institution.toLowerCase())) {
       return false
     }
+
+    if (activeFilters.date) {
+      const now = new Date()
+      const datasetDate = dataset.dateSort
+
+      switch (activeFilters.date) {
+        case "last-week":
+        case "week":
+          const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+          if (datasetDate < oneWeekAgo) return false
+          break
+        case "last-month":
+        case "month":
+          const oneMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+          if (datasetDate < oneMonthAgo) return false
+          break
+        case "last-year":
+        case "year":
+          const oneYearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000)
+          if (datasetDate < oneYearAgo) return false
+          break
+      }
+    }
+
     return true
   })
 
@@ -164,7 +277,6 @@ export default function BrowsePage() {
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       <main className="flex-1">
-        {/* Hero Section */}
         <section className="w-full py-12 bg-muted border-b">
           <div className="container px-4 md:px-6">
             <div className="space-y-4">
@@ -176,33 +288,83 @@ export default function BrowsePage() {
           </div>
         </section>
 
-        {/* Active Filters Display */}
-        {(activeFilters.organism || activeFilters.method) && (
+        {(activeFilters.organisms.length > 0 ||
+          activeFilters.methods.length > 0 ||
+          activeFilters.searchQuery ||
+          activeFilters.author ||
+          activeFilters.institution ||
+          activeFilters.date) && (
           <div className="border-b bg-muted/50">
             <div className="container px-4 md:px-6 py-3">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-sm text-muted-foreground">Active filters:</span>
-                {activeFilters.organism && (
-                  <div className="inline-flex items-center gap-1 rounded-full bg-spin-coral/20 px-3 py-1 text-sm font-medium text-spin-coral">
-                    Organism: {activeFilters.organism}
+                {activeFilters.searchQuery && (
+                  <Badge variant="secondary" className="gap-1">
+                    Search: {activeFilters.searchQuery}
                     <button
-                      onClick={() => clearFilter("organism")}
-                      className="ml-1 hover:bg-spin-coral/30 rounded-full p-0.5"
+                      onClick={() => clearFilter("searchQuery")}
+                      className="ml-1 hover:bg-muted rounded-full p-0.5"
                     >
                       <X className="h-3 w-3" />
                     </button>
-                  </div>
+                  </Badge>
                 )}
-                {activeFilters.method && (
-                  <div className="inline-flex items-center gap-1 rounded-full bg-spin-orange/20 px-3 py-1 text-sm font-medium text-spin-orange">
-                    Method: {activeFilters.method}
+                {activeFilters.organisms.map((organism) => (
+                  <Badge
+                    key={organism}
+                    variant="secondary"
+                    className="gap-1 bg-spin-coral/20 text-spin-coral hover:bg-spin-coral/30"
+                  >
+                    {organism}
                     <button
-                      onClick={() => clearFilter("method")}
-                      className="ml-1 hover:bg-spin-orange/30 rounded-full p-0.5"
+                      onClick={() => clearFilter("organisms", organism)}
+                      className="ml-1 hover:bg-spin-coral/40 rounded-full p-0.5"
                     >
                       <X className="h-3 w-3" />
                     </button>
-                  </div>
+                  </Badge>
+                ))}
+                {activeFilters.methods.map((method) => (
+                  <Badge
+                    key={method}
+                    variant="secondary"
+                    className="gap-1 bg-spin-orange/20 text-spin-orange hover:bg-spin-orange/30"
+                  >
+                    {method}
+                    <button
+                      onClick={() => clearFilter("methods", method)}
+                      className="ml-1 hover:bg-spin-orange/40 rounded-full p-0.5"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                ))}
+                {activeFilters.author && (
+                  <Badge variant="secondary" className="gap-1">
+                    Author: {activeFilters.author}
+                    <button onClick={() => clearFilter("author")} className="ml-1 hover:bg-muted rounded-full p-0.5">
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                )}
+                {activeFilters.institution && (
+                  <Badge variant="secondary" className="gap-1">
+                    Institution: {activeFilters.institution}
+                    <button
+                      onClick={() => clearFilter("institution")}
+                      className="ml-1 hover:bg-muted rounded-full p-0.5"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                )}
+                {activeFilters.date && (
+                  <Badge variant="secondary" className="gap-1">
+                    Date: {activeFilters.date}
+                    <button onClick={() => clearFilter("date")} className="ml-1 hover:bg-muted rounded-full p-0.5">
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
                 )}
               </div>
             </div>
@@ -211,7 +373,6 @@ export default function BrowsePage() {
 
         <div className="container px-4 md:px-6 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Sidebar Filters */}
             <aside className="lg:col-span-1 space-y-6">
               <div className="sticky top-4">
                 <div className="flex items-center justify-between mb-4">
@@ -226,55 +387,105 @@ export default function BrowsePage() {
                     <Label>Search</Label>
                     <div className="relative">
                       <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                      <Input placeholder="Search datasets..." className="pl-8" />
+                      <Input
+                        placeholder="Search datasets..."
+                        className="pl-8"
+                        value={activeFilters.searchQuery || ""}
+                        onChange={(e) =>
+                          setActiveFilters((prev) => ({ ...prev, searchQuery: e.target.value || undefined }))
+                        }
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") applyFilters()
+                        }}
+                      />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="field">Field of Study</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="All fields" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All fields</SelectItem>
-                        <SelectItem value="biology">Biology</SelectItem>
-                        <SelectItem value="chemistry">Chemistry</SelectItem>
-                        <SelectItem value="physics">Physics</SelectItem>
-                        <SelectItem value="medicine">Medicine</SelectItem>
-                        <SelectItem value="neuroscience">Neuroscience</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
                     <Label htmlFor="organism-filter">Organisms</Label>
-                    <Input
-                      id="organism-filter"
-                      placeholder="e.g., Caenorhabditis elegans"
-                      value={activeFilters.organism || ""}
-                      onChange={(e) => setActiveFilters((prev) => ({ ...prev, organism: e.target.value || undefined }))}
-                    />
+                    <div className="flex gap-2">
+                      <Input
+                        id="organism-filter"
+                        placeholder="e.g., Caenorhabditis elegans"
+                        value={organismInput}
+                        onChange={(e) => setOrganismInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault()
+                            addOrganism()
+                          }
+                        }}
+                      />
+                      <Button size="sm" onClick={addOrganism} className="bg-spin-coral hover:bg-spin-coral/90">
+                        Add
+                      </Button>
+                    </div>
+                    {activeFilters.organisms.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {activeFilters.organisms.map((organism) => (
+                          <Badge key={organism} variant="secondary" className="gap-1 bg-spin-coral/20 text-spin-coral">
+                            {organism}
+                            <button
+                              onClick={() => clearFilter("organisms", organism)}
+                              className="hover:bg-spin-coral/30 rounded-full"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="method-filter">Methods</Label>
-                    <Input
-                      id="method-filter"
-                      placeholder="e.g., CRISPR/Cas9, fMRI"
-                      value={activeFilters.method || ""}
-                      onChange={(e) => setActiveFilters((prev) => ({ ...prev, method: e.target.value || undefined }))}
-                    />
+                    <div className="flex gap-2">
+                      <Input
+                        id="method-filter"
+                        placeholder="e.g., CRISPR/Cas9, fMRI"
+                        value={methodInput}
+                        onChange={(e) => setMethodInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault()
+                            addMethod()
+                          }
+                        }}
+                      />
+                      <Button size="sm" onClick={addMethod} className="bg-spin-orange hover:bg-spin-orange/90">
+                        Add
+                      </Button>
+                    </div>
+                    {activeFilters.methods.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {activeFilters.methods.map((method) => (
+                          <Badge key={method} variant="secondary" className="gap-1 bg-spin-orange/20 text-spin-orange">
+                            {method}
+                            <button
+                              onClick={() => clearFilter("methods", method)}
+                              className="hover:bg-spin-orange/30 rounded-full"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="date">Publication Date</Label>
-                    <Select>
+                    <Select
+                      value={activeFilters.date || "all"}
+                      onValueChange={(value) =>
+                        setActiveFilters((prev) => ({ ...prev, date: value === "all" ? undefined : value }))
+                      }
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Any time" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="any">Any time</SelectItem>
+                        <SelectItem value="all">Any time</SelectItem>
                         <SelectItem value="week">Last week</SelectItem>
                         <SelectItem value="month">Last month</SelectItem>
                         <SelectItem value="year">Last year</SelectItem>
@@ -282,12 +493,13 @@ export default function BrowsePage() {
                     </Select>
                   </div>
 
-                  <Button className="w-full bg-spin-navy hover:bg-spin-navy/90">Apply Filters</Button>
+                  <Button className="w-full bg-spin-navy hover:bg-spin-navy/90" onClick={applyFilters}>
+                    Apply Filters
+                  </Button>
                 </div>
               </div>
             </aside>
 
-            {/* Main Content */}
             <div className="lg:col-span-3 space-y-6">
               <div className="flex items-center justify-between border-b pb-4">
                 <h2 className="text-2xl font-bold">All Datasets</h2>
@@ -306,7 +518,6 @@ export default function BrowsePage() {
                 </div>
               </div>
 
-              {/* All Datasets */}
               {sortedDatasets.length > 0 ? (
                 <div className="space-y-4">
                   {sortedDatasets.map((dataset) => (
@@ -332,7 +543,6 @@ export default function BrowsePage() {
                         <CardContent>
                           <p className="text-sm text-muted-foreground">{dataset.description}</p>
                           <div className="mt-4 flex flex-wrap gap-2">
-                            {/* Organism tags */}
                             {dataset.organisms.map((organism, j) => (
                               <button
                                 key={j}
@@ -346,7 +556,6 @@ export default function BrowsePage() {
                                 {organism}
                               </button>
                             ))}
-                            {/* Method tags */}
                             {dataset.methods.slice(0, 3).map((method, j) => (
                               <button
                                 key={j}
@@ -366,7 +575,6 @@ export default function BrowsePage() {
                               </span>
                             )}
                           </div>
-                          {/* Impact metrics display */}
                           {dataset.impact && dataset.impact.length > 0 && (
                             <div className="mt-4 pt-4 border-t">
                               <div className="flex items-center gap-1 mb-2 text-xs text-muted-foreground">

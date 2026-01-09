@@ -20,6 +20,16 @@ export default function HomePage() {
     lastName: string
   } | null>(null)
 
+  const [searchQuery, setSearchQuery] = useState("")
+  const [advancedFilters, setAdvancedFilters] = useState({
+    organisms: "",
+    methods: "",
+    publicationDate: "",
+    author: "",
+    institution: "",
+    keywords: "",
+  })
+
   useEffect(() => {
     // Check if user is logged in
     const userData = localStorage.getItem("currentUser")
@@ -30,6 +40,24 @@ export default function HomePage() {
       }
     }
   }, [])
+
+  const handleSearch = () => {
+    const params = new URLSearchParams()
+    if (searchQuery) params.append("q", searchQuery)
+    router.push(`/browse?${params.toString()}`)
+  }
+
+  const handleAdvancedSearch = () => {
+    const params = new URLSearchParams()
+    if (advancedFilters.organisms) params.append("organism", advancedFilters.organisms)
+    if (advancedFilters.methods) params.append("method", advancedFilters.methods)
+    if (advancedFilters.publicationDate) params.append("date", advancedFilters.publicationDate)
+    if (advancedFilters.author) params.append("author", advancedFilters.author)
+    if (advancedFilters.institution) params.append("institution", advancedFilters.institution)
+    if (advancedFilters.keywords) params.append("keywords", advancedFilters.keywords)
+    if (searchQuery) params.append("q", searchQuery)
+    router.push(`/browse?${params.toString()}`)
+  }
 
   const featuredDatasets = [
     {
@@ -102,8 +130,22 @@ export default function HomePage() {
               </div>
               <div className="w-full max-w-2xl space-y-2">
                 <div className="flex w-full items-center space-x-2">
-                  <Input type="search" placeholder="Search for null results, methods, organisms..." className="h-12" />
-                  <Button type="submit" size="icon" className="h-12 w-12 bg-spin-navy hover:bg-spin-navy/90">
+                  <Input
+                    type="search"
+                    placeholder="Search for null results, methods, organisms..."
+                    className="h-12"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleSearch()
+                    }}
+                  />
+                  <Button
+                    type="submit"
+                    size="icon"
+                    className="h-12 w-12 bg-spin-navy hover:bg-spin-navy/90"
+                    onClick={handleSearch}
+                  >
                     <Search className="h-5 w-5" />
                     <span className="sr-only">Search</span>
                   </Button>
@@ -120,38 +162,29 @@ export default function HomePage() {
                   <div id="advanced-search" className="hidden mt-4 p-4 border rounded-lg bg-white shadow-md">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="field">Field of Study</Label>
-                        <Select>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select field" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="physics">Physics</SelectItem>
-                            <SelectItem value="chemistry">Chemistry</SelectItem>
-                            <SelectItem value="biology">Biology</SelectItem>
-                            <SelectItem value="medicine">Medicine</SelectItem>
-                            <SelectItem value="earth-science">Earth Science</SelectItem>
-                            <SelectItem value="computer-science">Computer Science</SelectItem>
-                            <SelectItem value="mathematics">Mathematics</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="space-y-2">
                         <Label htmlFor="organisms">Organisms (Latin names)</Label>
-                        <Input id="organisms" placeholder="e.g., Escherichia coli, Drosophila melanogaster" />
+                        <Input
+                          id="organisms"
+                          placeholder="e.g., Escherichia coli, Drosophila melanogaster"
+                          value={advancedFilters.organisms}
+                          onChange={(e) => setAdvancedFilters((prev) => ({ ...prev, organisms: e.target.value }))}
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="methods">Methods (Be specific)</Label>
-                        <Input id="methods" placeholder="e.g., fMRI, CRISPR/Cas9, RT-qPCR" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="subtopic">Subtopic</Label>
-                        <Input id="subtopic" placeholder="e.g., Quantum Physics, Genomics" />
+                        <Input
+                          id="methods"
+                          placeholder="e.g., fMRI, CRISPR/Cas9, RT-qPCR"
+                          value={advancedFilters.methods}
+                          onChange={(e) => setAdvancedFilters((prev) => ({ ...prev, methods: e.target.value }))}
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="publication-date">Publication Date</Label>
-                        <Select>
+                        <Select
+                          value={advancedFilters.publicationDate}
+                          onValueChange={(value) => setAdvancedFilters((prev) => ({ ...prev, publicationDate: value }))}
+                        >
                           <SelectTrigger>
                             <SelectValue placeholder="Any time" />
                           </SelectTrigger>
@@ -166,19 +199,36 @@ export default function HomePage() {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="author">Author</Label>
-                        <Input id="author" placeholder="Author name" />
+                        <Input
+                          id="author"
+                          placeholder="Author name"
+                          value={advancedFilters.author}
+                          onChange={(e) => setAdvancedFilters((prev) => ({ ...prev, author: e.target.value }))}
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="institution">Institution</Label>
-                        <Input id="institution" placeholder="e.g., MIT, Stanford University" />
+                        <Input
+                          id="institution"
+                          placeholder="e.g., MIT, Stanford University"
+                          value={advancedFilters.institution}
+                          onChange={(e) => setAdvancedFilters((prev) => ({ ...prev, institution: e.target.value }))}
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="keywords">Keywords</Label>
-                        <Input id="keywords" placeholder="Enter keywords separated by commas" />
+                        <Input
+                          id="keywords"
+                          placeholder="Enter keywords separated by commas"
+                          value={advancedFilters.keywords}
+                          onChange={(e) => setAdvancedFilters((prev) => ({ ...prev, keywords: e.target.value }))}
+                        />
                       </div>
                     </div>
                     <div className="mt-4 flex justify-end">
-                      <Button className="bg-spin-navy hover:bg-spin-navy/90">Search</Button>
+                      <Button className="bg-spin-navy hover:bg-spin-navy/90" onClick={handleAdvancedSearch}>
+                        Search
+                      </Button>
                     </div>
                   </div>
                 </div>
