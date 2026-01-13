@@ -101,6 +101,38 @@ export default function AboutPage() {
                 </p>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl text-spin-navy">Meet the Co-Founders</CardTitle>
+              </CardHeader>
+              <CardContent className="text-base leading-relaxed space-y-6">
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-lg text-spin-navy">Mara Kushelman, M.S.</h3>
+                  <p>
+                    Mara Kushelman, M.S. is a Ph.D. student in the Microbiology Department at Yale University, where her
+                    research focuses on yellow fever mosquito, the viruses it carries, such as dengue and Zika, and the
+                    novel ways we can fight against its deadly impact on the global health. She has been a member of
+                    scientific academic community for the past 9 years, and has observed first-hand the effects of
+                    unpublished experimental effort on the progress of science as a whole and individual career
+                    development for researchers.
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-lg text-spin-navy">Ananya Krishna</h3>
+                  <p>
+                    Ananya Krishna is a senior at Yale University studying Applied Mathematics and Machine Learning,
+                    where her work lies at the intersection of AI, biology, and space. Her research focuses on applying
+                    generative and interpretable machine learning to biological systems, and adversarially jailbreaking
+                    predictive models. She has conducted research across academia and industry, and has also held
+                    leadership and venture roles supporting early-stage technology and science-driven startups. Through
+                    these experiences, she has seen firsthand how research culture, incentives, and translation shape
+                    both scientific progress and the ability of new ideas to move from lab to impact.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </main>
