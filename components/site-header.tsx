@@ -58,8 +58,8 @@ export function SiteHeader() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
-              <img src="/images/spin-logo.png" alt="spin logo" className="h-8 w-8" />
-              <span className="text-xl font-bold text-white">spin</span>
+              <img src="/images/parallax-logo.png" alt="parallax logo" className="h-8 w-8" />
+              <span className="text-xl font-bold text-white">parallax</span>
             </Link>
           </div>
           <nav className="hidden md:flex items-center gap-6">

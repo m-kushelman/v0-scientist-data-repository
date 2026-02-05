@@ -117,7 +117,7 @@ export default function HomePage() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Spin: Unpublished Scientific Data
+                  Parallax Database
                 </h1>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-spin-orange/10 border border-spin-orange/30 rounded-full text-sm text-spin-orange">
                   <AlertCircle className="h-3 w-3" />
