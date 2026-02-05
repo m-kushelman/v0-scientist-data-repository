@@ -9,7 +9,7 @@ export default function AboutPage() {
       <main className="container py-12">
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold tracking-tight text-spin-navy">About Spin</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-spin-navy">About Parallax</h1>
             <p className="text-lg text-muted-foreground">
               Sharing unpublished scientific data to advance research through transparency
             </p>
@@ -18,7 +18,7 @@ export default function AboutPage() {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl text-spin-navy">What is the purpose of Spin?</CardTitle>
+                <CardTitle className="text-2xl text-spin-navy">What is the purpose of Parallax?</CardTitle>
               </CardHeader>
               <CardContent className="text-base leading-relaxed space-y-4">
                 <p>
@@ -35,7 +35,7 @@ export default function AboutPage() {
                   While we often deem such data "negative", in reality this data is just as important to expanding the
                   collective scientific knowledge of humanity as any "positive result". On a practical level, every
                   failure informs our next step. While planning a project or an experiment, we often refer to published
-                  literature to help us understand if the approach has been tried before. <strong>Spin</strong> aims to
+                  literature to help us understand if the approach has been tried before. <strong>Parallax</strong> aims to
                   expand this body of public data to include products of experiments we often deem "unsuccessful", so
                   that instead of pursuing the direction that someone else has already explored, a researcher can
                   instead put their time and effort into a truly novel project. Or, perhaps, the result that was
@@ -47,7 +47,7 @@ export default function AboutPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-2xl text-spin-navy">
-                  How is Spin different from a journal or pre-print repository?
+                  How is Parallax different from a journal or pre-print repository?
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-base leading-relaxed space-y-4">
@@ -64,17 +64,17 @@ export default function AboutPage() {
                   We decreased this barrier to make data accessible faster and easier. For the researcher submitting
                   their results, only dataset, short description of results, and appropriate tags are required. And we
                   want to make sure you get credited for your hard work, which is why each data entry on{" "}
-                  <strong>Spin</strong> gets assigned a unique DOI, which can be used in future publications, grant
+                  <strong>Parallax</strong> gets assigned a unique DOI, which can be used in future publications, grant
                   applications, or even your CV. For the researcher looking for data, we ensured that{" "}
-                  <strong>Spin</strong> highly searchable by any parameters: by method, by organism, by keyword. With{" "}
-                  <strong>Spin</strong>, you are not searching for a paper, you are searching for experiment.
+                  <strong>Parallax</strong> highly searchable by any parameters: by method, by organism, by keyword. With{" "}
+                  <strong>Parallax</strong>, you are not searching for a paper, you are searching for experiment.
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl text-spin-navy">What kind of data is Spin for?</CardTitle>
+                <CardTitle className="text-2xl text-spin-navy">What kind of data is Parallax for?</CardTitle>
               </CardHeader>
               <CardContent className="text-base leading-relaxed space-y-4">
                 <p>
@@ -95,7 +95,7 @@ export default function AboutPage() {
               <CardContent className="text-base leading-relaxed space-y-4">
                 <p>
                   The researchers and their institutions retain the ownership of all data released through{" "}
-                  <strong>Spin</strong>. Researchers can select from different copyright options when submitting the
+                  <strong>Parallax</strong>. Researchers can select from different copyright options when submitting the
                   data, ranging from CC0 to CC BY-NC-SA. Choose a level of openness most appropriate for your data, and
                   most importantly, the one you're comfortable with!
                 </p>
