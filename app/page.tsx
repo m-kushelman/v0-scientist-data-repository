@@ -15,7 +15,7 @@ export default function LandingPage() {
         
         {/* Large Logo on the left */}
         <div className="flex-shrink-0" style={{ overflow: 'visible' }}>
-          <AnimatedLogo className="w-64 h-64 md:w-80 md:h-80 lg:w-[420px] lg:h-[420px]" />
+          <AnimatedLogo className="w-72 h-72 md:w-96 md:h-96 lg:w-[500px] lg:h-[500px]" />
         </div>
 
         {/* Title, tagline, and buttons on the right */}
