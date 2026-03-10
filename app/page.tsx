@@ -14,8 +14,8 @@ export default function LandingPage() {
       <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 max-w-6xl w-full">
         
         {/* Large Logo on the left */}
-        <div className="flex-shrink-0">
-          <AnimatedLogo className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96" />
+        <div className="flex-shrink-0" style={{ overflow: 'visible' }}>
+          <AnimatedLogo className="w-64 h-64 md:w-80 md:h-80 lg:w-[420px] lg:h-[420px]" />
         </div>
 
         {/* Title, tagline, and buttons on the right */}
