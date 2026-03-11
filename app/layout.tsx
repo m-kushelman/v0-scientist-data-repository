@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'Parallax - The Missing Half of Science',
+  description: 'Discover and share scientific research data. Parallax is a platform for scientists to share and discover the missing half of science.',
   generator: 'v0.app',
   icons: {
     icon: [

@@ -66,6 +66,9 @@ export function SiteHeader() {
             <Link href="/" className="text-sm font-medium text-white hover:text-white/80">
               Home
             </Link>
+            <Link href="/search" className="text-sm font-medium text-white/80 hover:text-white">
+              Search
+            </Link>
             <Link href="/browse" className="text-sm font-medium text-white/80 hover:text-white">
               Browse
             </Link>

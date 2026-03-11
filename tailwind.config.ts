@@ -79,10 +79,25 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "spin-slow": {
+          from: { transform: "rotate(0deg)" },
+          to: { transform: "rotate(360deg)" },
+        },
+        "spin-slow-reverse": {
+          from: { transform: "rotate(360deg)" },
+          to: { transform: "rotate(0deg)" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "0.3" },
+          "50%": { opacity: "0.6" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "spin-slow": "spin-slow 20s linear infinite",
+        "spin-slow-reverse": "spin-slow-reverse 20s linear infinite",
+        "pulse-glow": "pulse-glow 3s ease-in-out infinite",
       },
       backgroundImage: {
         "spin-gradient": "linear-gradient(to right, #F2A640, #E85A4F)",
