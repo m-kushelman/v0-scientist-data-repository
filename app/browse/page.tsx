@@ -277,7 +277,7 @@ export default function BrowsePage() {
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       <main className="flex-1">
-        <section className="w-full py-12 bg-muted border-b">
+        <section className="w-full py-12 bg-section-warm border-b">
           <div className="container px-4 md:px-6">
             <div className="space-y-4">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl">Browse Datasets</h1>
@@ -294,7 +294,7 @@ export default function BrowsePage() {
           activeFilters.author ||
           activeFilters.institution ||
           activeFilters.date) && (
-          <div className="border-b bg-muted/50">
+          <div className="border-b bg-section-subtle">
             <div className="container px-4 md:px-6 py-3">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-sm text-muted-foreground">Active filters:</span>
@@ -600,7 +600,7 @@ export default function BrowsePage() {
                             </div>
                           )}
                         </CardContent>
-                        <CardFooter className="border-t bg-muted/50 px-6 py-3">
+                        <CardFooter className="border-t bg-card-footer px-6 py-3">
                           <div className="flex items-center justify-between w-full text-xs text-muted-foreground">
                             <span>Published: {dataset.date}</span>
                             <span>Saves: {dataset.saves}</span>

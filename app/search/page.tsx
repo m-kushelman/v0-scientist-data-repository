@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Filter, Users, Database, Search, TrendingUp, AlertCircle } from "lucide-react"
+import { TestTube, Users, Database, Search, TrendingUp, AlertCircle } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
@@ -112,7 +112,7 @@ export default function HomePage() {
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-section-warm">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -156,7 +156,7 @@ export default function HomePage() {
                     className="text-sm flex items-center"
                     onClick={() => document.getElementById("advanced-search")?.classList.toggle("hidden")}
                   >
-                    <Filter className="mr-2 h-4 w-4" />
+                    <TestTube className="mr-2 h-4 w-4" />
                     Advanced Search
                   </Button>
                   <div id="advanced-search" className="hidden mt-4 p-4 border rounded-lg bg-white shadow-md">
@@ -262,7 +262,7 @@ export default function HomePage() {
                 </Card>
                 <Card className="text-center">
                   <CardHeader className="flex flex-col items-center">
-                    <Filter className="h-12 w-12 text-spin-coral mx-auto mb-4" />
+                    <TestTube className="h-12 w-12 text-spin-coral mx-auto mb-4" />
                     <CardTitle>Search by Methods</CardTitle>
                     <CardDescription>
                       Find data by experimental methods, organisms, and types of negative outcomes.
@@ -290,7 +290,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 bg-muted">
+        <section className="w-full py-12 md:py-24 bg-section-cool">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -382,7 +382,7 @@ export default function HomePage() {
                           </div>
                         )}
                       </CardContent>
-                      <CardFooter className="border-t bg-muted/50 px-6 py-3 mt-auto">
+                      <CardFooter className="border-t bg-card-footer px-6 py-3 mt-auto">
                         <div className="flex items-center justify-between w-full text-xs text-muted-foreground">
                           <span>Published: {dataset.date}</span>
                           <span>Saves: {dataset.saves}</span>
@@ -402,7 +402,7 @@ export default function HomePage() {
       <footer className="w-full border-t py-6">
         <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-center text-sm text-muted-foreground md:text-left">
-            &copy; {new Date().getFullYear()} spin. All rights reserved.
+            &copy; {new Date().getFullYear()} parallax. All rights reserved.
           </p>
           <div className="flex gap-4">
             <Link href="/terms" className="text-sm text-muted-foreground underline-offset-4 hover:underline">

@@ -59,6 +59,7 @@ const config = {
           orange: "#F2A640",
           coral: "#E85A4F",
           light: "#F9F9FB",
+          sand: "#F5F3F0",
           gradient: {
             from: "#F2A640",
             to: "#E85A4F",
@@ -101,6 +102,11 @@ const config = {
       },
       backgroundImage: {
         "spin-gradient": "linear-gradient(to right, #F2A640, #E85A4F)",
+        "section-warm": "linear-gradient(180deg, rgba(200,190,230,0.15) 0%, rgba(160,170,220,0.1) 12%, #ffffff 25%, #ffffff 30%, rgba(242,166,64,0.04) 70%, rgba(232,90,79,0.06) 100%)",
+        "section-cool": "linear-gradient(180deg, rgba(200,190,230,0.15) 0%, rgba(160,170,220,0.1) 15%, #ffffff 25%, rgba(242,166,64,0.03) 50%, rgba(232,90,79,0.05) 100%)",
+        "section-subtle": "linear-gradient(180deg, rgba(200,190,230,0.12) 0%, rgba(160,170,220,0.08) 40%, rgba(242,166,64,0.04) 70%, rgba(232,90,79,0.03) 100%)",
+        "page-gradient": "linear-gradient(180deg, rgba(200,190,230,0.15) 0%, rgba(160,170,220,0.1) 20%, #ffffff 35%, rgba(242,166,64,0.03) 50%, rgba(232,90,79,0.04) 100%)",
+        "card-footer": "linear-gradient(180deg, rgba(200,190,230,0.1) 0%, rgba(160,170,220,0.06) 40%, rgba(242,166,64,0.03) 70%, rgba(232,90,79,0.02) 100%)",
       },
     },
   },

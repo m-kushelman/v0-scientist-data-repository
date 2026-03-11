@@ -91,7 +91,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <div className="flex-1 flex items-center justify-center bg-muted/40 p-4">
+      <div className="flex-1 flex items-center justify-center bg-page-gradient p-4">
         <div className="w-full max-w-md">
           <Link href="/" className="inline-flex items-center text-spin-navy hover:text-spin-orange mb-4">
             <ArrowLeft className="mr-2 h-4 w-4" />

@@ -63,9 +63,6 @@ export function SiteHeader() {
             </Link>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/" className="text-sm font-medium text-white hover:text-white/80">
-              Home
-            </Link>
             <Link href="/search" className="text-sm font-medium text-white/80 hover:text-white">
               Search
             </Link>

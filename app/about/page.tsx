@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-spin-sand/30">
+    <div className="min-h-screen bg-page-gradient">
       <SiteHeader />
 
       <main className="container py-12">
